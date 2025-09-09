@@ -407,35 +407,59 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
       <div className="max-w-7xl mx-auto p-6">
         {/* Header */}
-        <header className="mb-6">
-          <h1 className="text-3xl font-bold text-gray-900">AI Website Generator</h1>
-          <p className="text-gray-600">Type what you want, get a static site instantly.</p>
+        <header className="mb-8 text-center">
+          <div className="inline-flex items-center gap-3 mb-4">
+            <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center">
+              <span className="text-white font-bold text-xl">I</span>
+            </div>
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              INSTAWEB
+            </h1>
+          </div>
+          <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+            Transform your ideas into stunning websites instantly with AI-powered generation
+          </p>
         </header>
 
         {/* Input Section */}
-        <div className="bg-white rounded-xl shadow p-4 mb-6">
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+        <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8 mb-8">
+          <div className="text-center mb-6">
+            <h2 className="text-2xl font-semibold text-gray-900 mb-2">What website do you want to create?</h2>
+            <p className="text-gray-600">Describe your vision and watch it come to life</p>
+          </div>
+          <label className="block text-sm font-medium text-gray-700 mb-3">
             Describe your website
           </label>
           <textarea
             rows={4}
-            className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full p-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 resize-none"
             placeholder="Example: A modern portfolio with a hero section, about me, three project cards, and a contact footer."
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
           />
-          <div className="mt-3 flex gap-3">
+          <div className="mt-6 flex gap-4 items-center justify-center">
             <button
               onClick={generate}
               disabled={loading || !prompt.trim()}
-              className="px-5 py-2 rounded-lg bg-blue-600 text-white disabled:bg-gray-400"
+              className="px-8 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold disabled:bg-gray-400 disabled:cursor-not-allowed hover:from-blue-700 hover:to-purple-700 transition-all duration-200 transform hover:scale-105 disabled:hover:scale-100 shadow-lg"
             >
-              {loading ? "Generating..." : "Generate Website"}
+              {loading ? (
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  Generating...
+                </div>
+              ) : (
+                "Generate Website"
+              )}
             </button>
-            {error && <div className="text-red-600 text-sm self-center">{error}</div>}
+            {error && (
+              <div className="text-red-600 text-sm bg-red-50 px-4 py-2 rounded-lg border border-red-200">
+                {error}
+              </div>
+            )}
           </div>
         </div>
 
@@ -444,11 +468,16 @@ export default function App() {
             {/* Main Content Area */}
             <div className="lg:col-span-2 space-y-6">
               {/* Live Preview */}
-              <div className="bg-white rounded-xl shadow">
-                <div className="px-4 py-2 border-b font-semibold flex justify-between items-center">
-                  <span>Live Preview</span>
-                  <div className="text-sm text-gray-500">
-                    {isCodeEditable ? "Showing edited version" : "Showing generated version"}
+              <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+                <div className="px-6 py-4 border-b border-gray-100 bg-gradient-to-r from-gray-50 to-gray-100">
+                  <div className="flex justify-between items-center">
+                    <div className="flex items-center gap-3">
+                      <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                      <span className="font-semibold text-gray-900">Live Preview</span>
+                    </div>
+                    <div className="text-sm text-gray-500 bg-white px-3 py-1 rounded-full border">
+                      {isCodeEditable ? "Edited version" : "Generated version"}
+                    </div>
                   </div>
                 </div>
                 <iframe
@@ -462,30 +491,35 @@ export default function App() {
               </div>
 
               {/* Code Preview/Editor Panel */}
-              <div className="bg-white rounded-xl shadow">
-                <div className="px-4 py-2 border-b font-semibold flex justify-between items-center">
-                  <span>Code {isCodeEditable ? "Editor" : "Preview"}</span>
-                  <div className="flex gap-2">
-                    <button
-                      onClick={copyCode}
-                      className="px-3 py-1 text-sm bg-gray-100 hover:bg-gray-200 rounded"
-                    >
-                      Copy Code
-                    </button>
-                    <button
-                      onClick={toggleCodeEdit}
-                      className="px-3 py-1 text-sm bg-blue-100 hover:bg-blue-200 rounded"
-                    >
-                      {isCodeEditable ? "Back to Read-Only" : "Edit Code"}
-                    </button>
-                    {isCodeEditable && (
+              <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+                <div className="px-6 py-4 border-b border-gray-100 bg-gradient-to-r from-gray-50 to-gray-100">
+                  <div className="flex justify-between items-center">
+                    <div className="flex items-center gap-3">
+                      <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+                      <span className="font-semibold text-gray-900">Code {isCodeEditable ? "Editor" : "Preview"}</span>
+                    </div>
+                    <div className="flex gap-2">
                       <button
-                        onClick={saveCodeChanges}
-                        className="px-3 py-1 text-sm bg-green-100 hover:bg-green-200 rounded"
+                        onClick={copyCode}
+                        className="px-4 py-2 text-sm bg-white hover:bg-gray-50 border border-gray-200 rounded-lg transition-colors duration-200 font-medium"
                       >
-                        Save & Update Preview
+                        Copy Code
                       </button>
-                    )}
+                      <button
+                        onClick={toggleCodeEdit}
+                        className="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200 font-medium"
+                      >
+                        {isCodeEditable ? "Back to Read-Only" : "Edit Code"}
+                      </button>
+                      {isCodeEditable && (
+                        <button
+                          onClick={saveCodeChanges}
+                          className="px-4 py-2 text-sm bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors duration-200 font-medium"
+                        >
+                          Save & Update
+                        </button>
+                      )}
+                    </div>
                   </div>
                 </div>
                 <div className="h-[400px]">
@@ -514,8 +548,11 @@ export default function App() {
 
             {/* Customization Panel */}
             <div className="relative">
-              <div className="bg-white rounded-xl shadow p-4">
-                <h3 className="font-semibold mb-4">Customization Panel</h3>
+              <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 sticky top-6">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-3 h-3 bg-purple-500 rounded-full"></div>
+                  <h3 className="text-xl font-semibold text-gray-900">Customization Panel</h3>
+                </div>
 
                 {/* 1) Header/Footer Colors */}
                 <div className="mb-6">
@@ -655,18 +692,29 @@ export default function App() {
       </div>
       {/* Bottom-centered Download section */}
       {html && (
-        <div className="py-6">
-          <div className="max-w-7xl mx-auto">
-            <div className="flex items-center justify-center">
+        <div className="py-8 bg-gradient-to-r from-gray-50 to-gray-100 -mx-6 mt-8">
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="text-center">
+              <h3 className="text-2xl font-semibold text-gray-900 mb-4">Ready to download your website?</h3>
+              <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
+                Get your complete website project with all files organized and ready to deploy
+              </p>
               <button
                 onClick={downloadAsZip}
                 disabled={downloading || !html}
-                className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:bg-gray-400"
+                className="px-8 py-4 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-xl hover:from-green-700 hover:to-emerald-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-all duration-200 transform hover:scale-105 disabled:hover:scale-100 shadow-lg font-semibold text-lg"
               >
-                {downloading ? "Creating ZIP..." : "Download Project (ZIP)"}
+                {downloading ? (
+                  <div className="flex items-center gap-3">
+                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    Creating ZIP...
+                  </div>
+                ) : (
+                  "Download Project (ZIP)"
+                )}
               </button>
+              <p className="text-sm text-gray-500 mt-4">Exports a VS Code-ready project with separate HTML, CSS, and JS files</p>
             </div>
-            <p className="text-center text-xs text-gray-500 mt-2">Exports a VS Code-ready project with separate HTML, CSS, and JS</p>
           </div>
         </div>
       )}
